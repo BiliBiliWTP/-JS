@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		li{
+			line-height: 40px;
+		}
+	</style>
+</head>
+<body>
+<ul>
+	<li>
+		<input type="button" value="-">
+	    <strong>0</strong>
+	    <input type="button" value="+"> 
+	    单价：<em>12.5元</em>
+	    小计：<span>0元</span>
+	</li>
+	<li>
+		<input type="button" value="-">
+	    <strong>0</strong>
+	    <input type="button" value="+"> 
+	    单价：<em>8.5元</em>
+	    小计：<span>0元</span>
+	</li>
+	<li>
+		<input type="button" value="-">
+	    <strong>0</strong>
+	    <input type="button" value="+"> 
+	    单价：<em>14.5元</em>
+	    小计：<span>0元</span>
+	</li>
+	<li>
+		<input type="button" value="-">
+	    <strong>0</strong>
+	    <input type="button" value="+"> 
+	    单价：<em>10元</em>
+	    小计：<span>0元</span>
+	</li>
+	<li>
+		<input type="button" value="-">
+	    <strong>0</strong>
+	    <input type="button" value="+"> 
+	    单价：<em>16.5元</em>
+	    小计：<span>0元</span>
+	</li>
+
+
+</ul>
+<div id="total">商品合计：0件<br>共花费了:0元<br>其中最贵的商品单价是：0元</div>
+	
+	<!-- <ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+	<li></li> -->
+</body>
+<script>
+	/*function $(tagName,parent){
+		return parent.getElementsByTagName(tagName);
+	}*/
+	/*
+		单击 加号按钮  数量增加  小计变化  总计部分实时变化
+
+		单击  减号按钮  数量减少  小计变化 总计部分实时变化
+
+	
+		
+	 */
+	 //先获取页面中的元素
+	 //
+	 //
+	 // var aLi = $("li",document);
+	 
+	 var aLi = document.getElementsByTagName("li");
+	 var oTotal =document.getElementById("total");
+
+	 var aStrong = document.getElementsByTagName("strong");
+	 var aEm = document.getElementsByTagName("em");
+	 /*fn(aLi[0]);
+	 fn(aLi[1]);
+	 fn(aLi[2]);
+	 fn(aLi[3]);
+	 fn(aLi[4]);*/
+	 /*
+	 
+		核心功能是 一样的 把核心功能用函数包起来
+
+		把不一样的部分 提出来 用形参代替 在外面把不同的部分 再传进去 
+
+		父级不一样 传父级
+
+
+
+
+	  */
+	 
+
+	 for(var i=0;i<aLi.length;i++){
+	 	fn(aLi[i]);
+	 }
+
+	 //用来统计总数量的变量
+	 var totalNum = 0;
+	 //用来统计共花费多少钱
+	 var money = 0;
+
+	 //用来存最贵单价
+	 var expensive = 0;
+	 function fn(m){
+
+		 var aInp = m.getElementsByTagName("input");
+		 var oStrong =m.getElementsByTagName("strong");
+		 var oEm = m.getElementsByTagName("em");
+		 var oSpan = m.getElementsByTagName("span");
+
+		 //获取数量 转换成数字类型 方便后面计算
+		 var num = parseInt(oStrong[0].innerHTML);//文本 字符串 "0"===>0
+		 //获取单价 转换成数字 方便后面计算
+		 var price = parseFloat(oEm[0].innerHTML);
+		 
+
+		 //单击减号
+		 aInp[0].onclick=function () {
+		 	num--;//0
+
+		 	
+		 	if(num<0){
+		 		num=0;
+		 	}else{
+		 		//只有num>=0 总计数量才会减
+		 		totalNum--;
+		 		money-=price;
+		 	}
+
+		 	//让增加后的num 变量 里面存的值 给回去页面中的strong标签里面
+			oStrong[0].innerHTML = num;
+			// 让小计标签里面的内容 等于最新的数量乘以单价
+			oSpan[0].innerHTML=num*price+"元";
+
+
+
+			//如果局部数量为0 
+		 	if(num==0){
+		 		expensive = 0;
+		 		for(var i=0;i<aStrong.length;i++){
+		 			var shuliang = parseInt(aStrong[i].innerHTML);
+		 			if(shuliang!=0){
+		 				var danjia = parseFloat(aEm[i].innerHTML);
+		 				if(expensive<danjia){
+		 					expensive = danjia;
+		 				}
+		 			}
+		 		}
+
+		 	}
+		 /*	console.log(num);
+		 	console.log(expensive);*/
+			oTotal.innerHTML="商品合计："+totalNum+"件<br>共花费了:"+money+"元<br>其中最贵的商品单价是："+expensive+"元";
+		 }
+
+		 //单击加号
+		aInp[1].onclick=function () {
+			//单击一次  数量加一次
+			num++;
+			totalNum++;
+			money+=price;
+			//让增加后的num 变量 里面存的值 给回去页面中的strong标签里面
+			oStrong[0].innerHTML = num;
+			// 让小计标签里面的内容 等于最新的数量乘以单价
+			oSpan[0].innerHTML=num*price+"元";
+
+			if(expensive<price){
+				expensive =price;
+			}
+
+			oTotal.innerHTML="商品合计："+totalNum+"件<br>共花费了:"+money+"元<br>其中最贵的商品单价是："+expensive+"元";
+		}
+
+	}
+</script>
+</html>
